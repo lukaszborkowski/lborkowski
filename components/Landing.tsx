@@ -299,7 +299,7 @@ const Hero = () => (
                             <Tag key={t.id} variant="subtle" bg="blackAlpha.100">
                                 <HStack spacing={2}>
                                     <IconImg src={techIcon(t?.iconName || t.id, t.hex)} boxSize={4} label={t.label} />
-                                    <TagLabel fontSize="xs" letterSpacing="wide">{t.label}</TagLabel>
+                                    <TagLabel fontSize="2xs" letterSpacing="wide" color="blackAlpha.600">{t.label}</TagLabel>
                                 </HStack>
                             </Tag>
                         ))}
