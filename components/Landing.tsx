@@ -619,7 +619,7 @@ const Contact = () => (
                             </HStack>
                             <HStack>
                                 <IconImg src={icons.phone} />
-                                <Text>791 601 198</Text>
+                                <Text>791 16 01 98</Text>
                             </HStack>
                             <HStack>
                                 <Icon path={mdiInvoiceTextOutline} size={6} />
