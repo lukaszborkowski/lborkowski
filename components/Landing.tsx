@@ -72,6 +72,48 @@ type Project = {
 };
 
 const PROJECTS: Project[] = [
+    // {
+    //     id: "13",
+    //     title: "Libroo",
+    //     duration: "6 months",
+    //     technologies: [
+    //         "Next.js",
+    //         "React",
+    //         "Vite",
+    //         "NestJS",
+    //         "PostgreSQL",
+    //         "Prisma",
+    //         "Redis",
+    //         "Chakra UI",
+    //         "Turborepo",
+    //         "Docker"
+    //     ],
+    //     description:
+    //         "Libroo is a modern, fully web-based library management system built for Polish public, school, and specialist libraries, compliant with MARC 21 cataloging and GUS K-03 / National Library reporting standards. Built as a Turborepo monorepo with a NestJS API, React admin and super-admin panels, a public OPAC catalog, and a Next.js marketing landing — it supports multi-branch catalogs, lending, reservations, and email/SMS notifications.",
+    //     demoUrl: "https://libroo.pl",
+    //     image: "/libroo-logo.svg"
+    // },
+    {
+        id: "12",
+        title: "VitaBloom",
+        duration: "4 months",
+        technologies: [
+            "React Native",
+            "Expo",
+            "NestJS",
+            "PostgreSQL",
+            "Prisma",
+            "Redis",
+            "React",
+            "Chakra UI",
+            "Turborepo",
+            "Docker"
+        ],
+        description:
+            "VitaBloom is a women's health platform centered on contraception and cycle tracking, built as a Turborepo monorepo with an Expo React Native client app, a React admin panel, and a NestJS API backed by PostgreSQL, Prisma, and Redis. It delivers personalized contraception guidance, reminders, and health insights through a clean, mobile-first experience.",
+        demoUrl: "https://vitabloom.pl",
+        image: "/vitabloom-logo.png"
+    },
     {
         id: "11",
         title: "NutriLaunch",
@@ -309,7 +351,7 @@ const Hero = () => (
                 <Box>
                     <Image
                         alt="Developer at multi-monitor desk"
-                        src="https://s3.us-east-005.backblazeb2.com/blackalpha/originOrg/5d5bc9e1bede615396d4654bb3003f6c63f5ed7b1274b1d72312b008d44f1d79.webp"
+                        src="/hero.png"
                     />
                 </Box>
             </SimpleGrid>
@@ -435,7 +477,22 @@ const ProjectCard: React.FC<{ p: Project; index: number }> = ({ p, index }) => (
                     base: 4,
                 }}
             >
-                <Image alt={p.title} src={p.image} objectFit="cover" w="100%" h="100%" maxH={{ base: 220, md: "300px" }} rounded={"xl"} />
+                {(() => {
+                    const isLogo = p.image?.endsWith(".svg") || p.image?.includes("logo");
+                    return (
+                        <Image
+                            alt={p.title}
+                            src={p.image}
+                            objectFit={isLogo ? "contain" : "cover"}
+                            bg={isLogo ? "blackAlpha.50" : undefined}
+                            p={isLogo ? 8 : 0}
+                            w="100%"
+                            h="100%"
+                            maxH={{ base: 220, md: "300px" }}
+                            rounded={"xl"}
+                        />
+                    );
+                })()}
             </Box>
             <Stack p={{ base: 5, md: 8 }} spacing={4}
             pt={{
