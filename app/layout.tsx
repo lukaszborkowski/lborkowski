@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
 import { Providers } from "./providers";
+
+const poppins = Poppins({
+    subsets: ["latin", "latin-ext"],
+    weight: ["300", "400", "500", "600", "700", "800"],
+    variable: "--font-poppins",
+    display: "swap",
+});
 
 export const metadata: Metadata = {
     title: "Łukasz Borkowski — Full Stack Dev & UX/UI Designer",
@@ -13,7 +21,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" className={poppins.variable}>
             <body>
                 <Providers>{children}</Providers>
             </body>

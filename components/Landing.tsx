@@ -6,8 +6,10 @@ import {
     Button,
     Container,
     Divider,
+    Flex,
     Heading,
     HStack,
+    IconButton,
     Image,
     Link,
     SimpleGrid,
@@ -15,9 +17,10 @@ import {
     Tag,
     TagLabel,
     Text,
+    useBreakpointValue,
     VStack
 } from "@chakra-ui/react";
-import { mdiArrowRight, mdiEye, mdiInvoiceTextOutline, mdiLinkedin, mdiPhone } from "@mdi/js";
+import { mdiArrowLeft, mdiArrowRight, mdiEye, mdiInvoiceTextOutline, mdiLinkedin, mdiPhone } from "@mdi/js";
 import * as React from "react";
 import { Icon } from "@/components/Icon";
 import { Logo } from "@/components/Logo";
@@ -68,31 +71,11 @@ type Project = {
     githubUrl?: string;
     status?: string;
     image?: string;
+    imageBg?: string;
     ownership?: string;
 };
 
 const PROJECTS: Project[] = [
-    // {
-    //     id: "13",
-    //     title: "Libroo",
-    //     duration: "6 months",
-    //     technologies: [
-    //         "Next.js",
-    //         "React",
-    //         "Vite",
-    //         "NestJS",
-    //         "PostgreSQL",
-    //         "Prisma",
-    //         "Redis",
-    //         "Chakra UI",
-    //         "Turborepo",
-    //         "Docker"
-    //     ],
-    //     description:
-    //         "Libroo is a modern, fully web-based library management system built for Polish public, school, and specialist libraries, compliant with MARC 21 cataloging and GUS K-03 / National Library reporting standards. Built as a Turborepo monorepo with a NestJS API, React admin and super-admin panels, a public OPAC catalog, and a Next.js marketing landing — it supports multi-branch catalogs, lending, reservations, and email/SMS notifications.",
-    //     demoUrl: "https://libroo.pl",
-    //     image: "/libroo-logo.svg"
-    // },
     {
         id: "12",
         title: "VitaBloom",
@@ -113,6 +96,41 @@ const PROJECTS: Project[] = [
             "VitaBloom is a women's health platform centered on contraception and cycle tracking, built as a Turborepo monorepo with an Expo React Native client app, a React admin panel, and a NestJS API backed by PostgreSQL, Prisma, and Redis. It delivers personalized contraception guidance, reminders, and health insights through a clean, mobile-first experience.",
         demoUrl: "https://vitabloom.pl",
         image: "/vitabloom-logo.png"
+    },
+    {
+        id: "1",
+        title: "MeShape",
+        duration: "12 months",
+        technologies: ["React", "React Native", "Expo", "Nest.js", "MongoDB", "Chakra UI", "Docker", "AWS", "Stripe"],
+        description:
+            "MeShape is a digital platform for personalized diet generation, with a mobile app for users, a CMS panel for content management, and backend services that create tailored meal plans based on user data and preferences.",
+        demoUrl: "https://meshape.app",
+        ownership:
+            "The project was developed at CodeWell and is the property of the company.",
+        image:
+            "https://s3.us-east-005.backblazeb2.com/blackalpha/originOrg/846c4b64de8e0d0c738136abc7d6f8287b70bd5c9d2a26fa70440e091778319f.webp",
+    },
+    {
+        id: "13",
+        title: "Libroo",
+        duration: "6 months",
+        technologies: [
+            "Next.js",
+            "React",
+            "Vite",
+            "NestJS",
+            "PostgreSQL",
+            "Prisma",
+            "Redis",
+            "Chakra UI",
+            "Turborepo",
+            "Docker"
+        ],
+        description:
+            "Libroo is a modern, fully web-based library management system built for Polish public, school, and specialist libraries, compliant with MARC 21 cataloging and GUS K-03 / National Library reporting standards. Built as a Turborepo monorepo with a NestJS API, React admin and super-admin panels, a public OPAC catalog, and a Next.js marketing landing — it supports multi-branch catalogs, lending, reservations, and email/SMS notifications.",
+        demoUrl: "https://libroo.pl",
+        image: "/libroo-logo.svg",
+        imageBg: "#181818"
     },
     {
         id: "11",
@@ -137,20 +155,6 @@ const PROJECTS: Project[] = [
             "https://s3.us-east-005.backblazeb2.com/blackalpha/originOrg/3915f12bff7cb3f494a5ca916c52c465e24c7cb6489cd60fee499f27f4450db0.webp"
     }
     ,
-    {
-        id: "1",
-        title: "MeShape",
-        duration: "12 months",
-        technologies: ["React", "React Native", "Expo", "Nest.js", "MongoDB", "Chakra UI", "Docker", "AWS", "Stripe"],
-        description:
-            "MeShape is a digital platform for personalized diet generation, with a mobile app for users, a CMS panel for content management, and backend services that create tailored meal plans based on user data and preferences.",
-        demoUrl: "https://meshape.app",
-        ownership:
-            "The project was developed at CodeWell and is the property of the company.",
-
-        image:
-            "https://s3.us-east-005.backblazeb2.com/blackalpha/originOrg/846c4b64de8e0d0c738136abc7d6f8287b70bd5c9d2a26fa70440e091778319f.webp",
-    },
     {
         id: "2",
         title: "50 Shades Of ADHD",
@@ -462,127 +466,160 @@ const About = () => (
     </Box>
 );
 
-const ProjectCard: React.FC<{ p: Project; index: number }> = ({ p, index }) => (
-    <Box
-        rounded="2xl"
-        bg="white"
-        shadow="sm"
-        border="1px solid"
-        borderColor="gray.200"
-        overflow="hidden"
-    >
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={0}>
-            <Box
-                p={{
-                    base: 4,
-                }}
-            >
-                {(() => {
-                    const isLogo = p.image?.endsWith(".svg") || p.image?.includes("logo");
-                    return (
-                        <Image
-                            alt={p.title}
-                            src={p.image}
-                            objectFit={isLogo ? "contain" : "cover"}
-                            bg={isLogo ? "blackAlpha.50" : undefined}
-                            p={isLogo ? 8 : 0}
-                            w="100%"
-                            h="100%"
-                            maxH={{ base: 220, md: "300px" }}
-                            rounded={"xl"}
-                        />
-                    );
-                })()}
+const ProjectCard: React.FC<{ p: Project }> = ({ p }) => {
+    const isLogo = p.image?.endsWith(".svg") || p.image?.includes("logo");
+    return (
+        <Stack
+            h="100%"
+            w="100%"
+            rounded="2xl"
+            bg="white"
+            shadow="sm"
+            border="1px solid"
+            borderColor="gray.200"
+            overflow="hidden"
+            spacing={0}
+        >
+            {/* Zdjęcie u góry */}
+            <Box position="relative" p={4} pb={0}>
+                <Image
+                    alt={p.title}
+                    src={p.image}
+                    objectFit={isLogo ? "contain" : "cover"}
+                    bg={p.imageBg ?? (isLogo ? "blackAlpha.50" : undefined)}
+                    p={isLogo ? 8 : 0}
+                    w="100%"
+                    h={{ base: 200, md: "220px" }}
+                    rounded="xl"
+                />
+                {p.status && (
+                    <Tag
+                        size="sm"
+                        colorScheme="cyan"
+                        borderRadius="full"
+                        position="absolute"
+                        top={6}
+                        right={6}
+                    >
+                        <TagLabel>{p.status}</TagLabel>
+                    </Tag>
+                )}
             </Box>
-            <Stack p={{ base: 5, md: 8 }} spacing={4}
-            pt={{
-                base: 0,
-                md: 8,
-            }}
-            >
 
-                <HStack
-                    justify={"space-between"}
-                    align={{
-                        base: "flex-start",
-                        // md: "center",
-                    }}
-                    flexDir={{
-                        base: "column",
-                        md: "row",
-                    }}
-                >
-                    <Heading size="lg">
+            {/* Opis pod spodem */}
+            <Stack p={{ base: 5, md: 6 }} spacing={3} flex={1}>
+                <Heading size="md">{p.title}</Heading>
 
-                        {p.title}
-
-                    </Heading>
-                    {p.status && (
-                        <Tag size="sm" colorScheme="cyan" borderRadius="full">
-                            <TagLabel>{p.status}</TagLabel>
-                        </Tag>
-                    )}
-                </HStack>
-                <HStack spacing={2} color="gray.500" fontSize="sm" flexWrap="wrap">
-                    <Text><Text as="span" color="gray.700" fontWeight="semibold">Duration:</Text> {p.duration}</Text>
-
-                    {/* <Text><Text as="span" color="gray.700" fontWeight="semibold">Difficulty</Text> {p.difficulty}</Text> */}
-                    <br />
+                <Stack spacing={1} color="gray.500" fontSize="sm">
+                    <Text>
+                        <Text as="span" color="gray.700" fontWeight="semibold">Duration:</Text> {p.duration}
+                    </Text>
                     <Text>
                         <Text as="span" color="gray.700" fontWeight="semibold">Technologies:</Text>{" "}
                         {p.technologies.join(", ")}
                     </Text>
-                </HStack>
+                </Stack>
 
-                <Text color="gray.600" fontSize={["xs", "sm"]}>{p.description}</Text>
+                <Text color="gray.600" fontSize="sm" noOfLines={4}>{p.description}</Text>
                 {p.ownership && <Text color="gray.500" fontSize="xs">{p.ownership}</Text>}
 
+                <Box flex={1} />
 
-                <HStack pt={2} spacing={3} flexWrap="wrap">
-                    {p.demoUrl && (
-                        <Button
-                            as={Link}
-                            href={p.demoUrl}
-                            isExternal
-                            variant={"outline"}
-                            borderRadius={"full"}
-                            w="full"
-                            rightIcon={<Icon path={mdiEye} />}
+                {p.demoUrl && (
+                    <Button
+                        as={Link}
+                        href={p.demoUrl}
+                        isExternal
+                        variant="outline"
+                        borderRadius="full"
+                        w="full"
+                        rightIcon={<Icon path={mdiEye} />}
+                    >
+                        LIVE
+                    </Button>
+                )}
+            </Stack>
+        </Stack>
+    );
+};
+
+/** Okrągły przycisk z dużą strzałką */
+const ArrowButton: React.FC<{
+    direction: "left" | "right";
+    onClick: () => void;
+    isDisabled?: boolean;
+}> = ({ direction, onClick, isDisabled }) => (
+    <IconButton
+        aria-label={direction === "left" ? "Previous projects" : "Next projects"}
+        onClick={onClick}
+        isDisabled={isDisabled}
+        icon={<Icon path={direction === "left" ? mdiArrowLeft : mdiArrowRight} size={7} />}
+        boxSize={{ base: 12, md: 16 }}
+        borderRadius="full"
+        bg="white"
+        color="blackAlpha.800"
+        border="1px solid"
+        borderColor="gray.300"
+        shadow="md"
+        _hover={{ bg: "blackAlpha.50", borderColor: "gray.400" }}
+        _active={{ bg: "blackAlpha.100" }}
+    />
+);
+
+const Projects = () => {
+    // Ile kart widać naraz — mobile: 1, desktop: 3
+    const perView = useBreakpointValue({ base: 1, md: 3 }) ?? 1;
+    const [page, setPage] = React.useState(0);
+
+    const maxPage = Math.max(0, PROJECTS.length - perView);
+    const clamped = Math.min(page, maxPage);
+
+    React.useEffect(() => {
+        setPage((p) => Math.min(p, maxPage));
+    }, [maxPage]);
+
+    const prev = () => setPage((p) => Math.max(0, p - 1));
+    const next = () => setPage((p) => Math.min(maxPage, p + 1));
+
+    return (
+        <Box id="projects" py={{ base: 16, md: 24 }}>
+            <Container maxW="6xl">
+                <Stack spacing={8}>
+                    <Heading size="xl" textAlign={{ base: "center", md: "left" }}>
+                        Last Projects
+                    </Heading>
+
+                    {/* Prosty slider — taśma kart przesuwana o jeden item */}
+                    <Box overflow="hidden">
+                        <Flex
+                            align="stretch"
+                            transition="transform 0.4s ease"
+                            transform={`translateX(-${clamped * (100 / perView)}%)`}
                         >
-                            LIVE
-                        </Button>
-                    )}
+                            {PROJECTS.map((p) => (
+                                <Box
+                                    key={p.id}
+                                    flex={`0 0 ${100 / perView}%`}
+                                    maxW={`${100 / perView}%`}
+                                    px={3}
+                                    display="flex"
+                                >
+                                    <ProjectCard p={p} />
+                                </Box>
+                            ))}
+                        </Flex>
+                    </Box>
 
-                </HStack>
-            </Stack>
-        </SimpleGrid>
-    </Box>
-);
-
-const Projects = () => (
-    <Box id="projects" py={{ base: 16, md: 24 }}>
-        <Container maxW="6xl">
-            <Stack spacing={8}
-
-            >
-                <Heading size="xl"
-                    textAlign={{
-                        base: "center",
-                        md: "left",
-                    }}
-                >Last Projects</Heading>
-                <Stack spacing={{
-                    base: 6,
-                    md: 8,
-                }}>
-                    {PROJECTS.map((p, i) => (
-                        <ProjectCard key={p.id} p={p} index={i} />
-                    ))}
+                    {/* Strzałki pod sliderem */}
+                    <HStack justify="center" spacing={4}>
+                        <ArrowButton direction="left" onClick={prev} isDisabled={clamped === 0} />
+                        <ArrowButton direction="right" onClick={next} isDisabled={clamped >= maxPage} />
+                    </HStack>
                 </Stack>
-            </Stack>
-        </Container>
-    </Box>
-);
+            </Container>
+        </Box>
+    );
+};
 
 const Contact = () => (
     <Box id="contact" py={{ base: 16, md: 24 }}>
@@ -664,6 +701,7 @@ export function Landing() {
                     base: 0,
                     md: 8,
                 }}
+                overflowX="hidden"
             >
                 <Hero />
                 <About />
